@@ -1,6 +1,12 @@
 
-import pandas as pd
+import pandas
 
-df=pd.read_csv("2018_Central_Park_Squirrel_census_-_Squirrel_Data.csv")
+data = pandas.read_csv("nato_phonetic_alphabet.csv")
 
-print(df.head())
+phonetic_dict = {row.letter: row.code for (index, row) in data.iterrows()}
+print(phonetic_dict)
+
+
+word = input("Enter a word: ").upper()
+output_list = [phonetic_dict[letter] for letter in word]
+print(output_list)
