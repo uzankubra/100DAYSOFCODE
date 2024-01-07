@@ -11,9 +11,33 @@ header = {
 response = requests.get(url, headers=header)
 
 soup = BeautifulSoup(response.content, "lxml")
-print(soup.prettify())
 
-price = soup.find(class_="a-offscreen").get_text()
+# print(soup.prettify())
+
+price = soup.find(class_="a-offscreen").get_text()  # **maybe it is a little problem**
 price_without_currency = price.split("$")[1]
-price_as_float = float(price_without_currency)
-print(price_as_float)
+price_float = float(price_without_currency)
+print(price_float)
+
+# send email
+import smtplib
+
+title = soup.find(id="productTitle").get_text().strip()
+print(title)
+
+price = 200
+email="example-smtp-address"
+password = "example**"
+your_email="kubraauzann@gmail.com"
+
+if price_float < price:
+    message = f"{title} is now {price}"
+
+    with smtplib.SMTP(email, port=587) as connection:
+        connection.starttls()
+        result = connection.login(email, password)
+        connection.sendmail(
+            from_addr=email,
+            to_addrs=your_email,
+            msg=f"Subject:Amazon Price Alert!\n\n{message}\n{url}".encode("utf-8")
+        )
